@@ -1,11 +1,18 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
-import { Layout } from "antd";
+import { ConfigProvider, Layout } from "antd";
 import AppHeader from "../components/AppHeader";
 import Sider from "antd/es/layout/Sider";
 import AppSideMenu from "@/components/AppSideMenu";
 import { Content } from "antd/es/layout/layout";
+import { Inter } from "next/font/google";
+import theme from "../../config/themeConfig";
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap'
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,32 +33,34 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${inter.className} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AntdRegistry>
-          <Layout>
-            <AppHeader />
-            <Layout hasSider>
-              <Sider
-                theme="light"
-                style={{
-                  position: 'fixed',
-                  top: '64px',
-                  left: 0,
-                  borderRight: '1px solid #f1f1f1',
-                  height: 'calc(100vh - 64px)'
-                }}
-              >
-                <AppSideMenu />
-              </Sider>
-              <Layout style={{ marginLeft: '200px' }}>
-                <Content style={{ padding: '16px', minHeight: 'calc(100vh - 64px)' }}>
-                  {children}
-                </Content>
+        <ConfigProvider theme={theme}>
+          <AntdRegistry>
+            <Layout>
+              <AppHeader />
+              <Layout hasSider>
+                <Sider
+                  theme="light"
+                  style={{
+                    position: 'fixed',
+                    top: '64px',
+                    left: 0,
+                    borderRight: '1px solid #f1f1f1',
+                    height: 'calc(100vh - 64px)'
+                  }}
+                >
+                  <AppSideMenu />
+                </Sider>
+                <Layout style={{ marginLeft: '200px' }}>
+                  <Content style={{ padding: '16px', minHeight: 'calc(100vh - 64px)' }}>
+                    {children}
+                  </Content>
+                </Layout>
               </Layout>
             </Layout>
-          </Layout>
-        </AntdRegistry>
+          </AntdRegistry>
+        </ConfigProvider>
       </body>
     </html>
   );
